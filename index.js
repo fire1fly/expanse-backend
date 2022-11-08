@@ -1,9 +1,11 @@
 import express from "express";
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 import { registerValidator } from './validations/auth.js';
 import checkAuth from './utils/checkAuth.js';
-import * as UserController from './controllers/UserController.js'
+import * as UserController from './controllers/UserController.js';
+import * as EventsController from './controllers/EventsController.js';
 
 mongoose
   .connect('mongodb+srv://admin:BRxOI2CGQpXM8qqf@cluster0.thq2mgf.mongodb.net/db?retryWrites=true&w=majority')
@@ -12,6 +14,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Hi, it is response!');
@@ -20,6 +23,7 @@ app.get('/', (req, res) => {
 app.post('/auth/login', UserController.login);
 app.post('/auth/register', registerValidator, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
+app.post('/eventsByDay', checkAuth, EventsController.eventsByDay);
 
 app.listen(4444, (err) => {
   if (err) {

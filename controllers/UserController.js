@@ -30,7 +30,7 @@ export const register = async (req, res) => {
     // сохранение созданного документа в БД
     const user = await doc.save();
 
-    // создание JWT токена, хранение 30 дней
+    // создание JWT токена, хранение 1 день
     const token = jwt.sign(
       {
         _id: user._id,
