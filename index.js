@@ -24,6 +24,7 @@ app.post('/auth/login', UserController.login);
 app.post('/auth/register', registerValidator, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
 app.post('/eventsByDay', checkAuth, EventsController.eventsByDay);
+app.get('/notifications', checkAuth, EventsController.notifications);
 
 app.listen(4444, (err) => {
   if (err) {

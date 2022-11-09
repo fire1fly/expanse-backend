@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const EventsSchema = mongoose.Schema({
+  eventType: {
+    type: Array,
+    required: true
+  },
   date: {
     type: String,
     required: true
@@ -17,6 +21,7 @@ const EventsSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  title: String,
   text: {
     type: String,
     required: true

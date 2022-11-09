@@ -10,26 +10,9 @@ export const eventsByDay = async (req, res) => {
       });
     }
 
-    // const doc1 = new EventsModel({
-    //   date: "08-11-2022",
-    //   userId: req.userId,
-    //   time: "9:00",
-    //   text: "Данил, у вас встреча с трекером"
-    // });
-    // const doc1 = new EventsModel({
-    //   date: "08-11-2022",
-    //   userId: req.userId,
-    //   time: "12:00",
-    //   text: "Сергей, у вас с аналитиками"
-    // });
-
-    // await doc1.save();
-
-    console.log(req.userId);
-    console.log("DEPART: ", req.body.department);
-
     const eventsByDeparments = await EventsModel
       .find({
+        eventType: "event",
         date: req.body.date,
         $or: [
           { departments: { $size: 0 } },
@@ -39,14 +22,13 @@ export const eventsByDay = async (req, res) => {
       .sort({ time: 1 })
 
     const eventsByUser = await EventsModel.find({
+      eventType: "event",
       date: req.body.date,
       userId: req.userId
     }, { createdAt: 0, updatedAt: 0 })
       .sort({ time: 1 });
 
     const events = [...eventsByDeparments, ...eventsByUser];
-
-    // console.log(events);
 
     if (events.length === 0) {
       return res.json({
@@ -67,3 +49,33 @@ export const eventsByDay = async (req, res) => {
     });
   }
 }
+
+export const notifications = async (req, res) => {
+  try {
+
+    const notifications = await EventsModel.find({
+      eventType: "notification",
+      userId: req.userId
+    }, { createdAt: 0, updatedAt: 0, eventType: 0, userId: 0 })
+      .sort({ date: -1 }).limit(3);
+
+    if (notifications.length === 0) {
+      return res.json({
+        message: "Уведомлений нет",
+        events: null
+      });
+    }
+
+    res.json({
+      message: "ok",
+      notifications
+    });
+
+  } catch (error) {
+    console.log("Events error: ", error);
+    res.status(500).json({
+      message: "Не удалось выполнить запрос"
+    });
+  }
+}
+
