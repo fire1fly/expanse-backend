@@ -1,4 +1,4 @@
-import EventsModel from '../models/Events.js';
+import EventsModel from '../models/Event.js';
 
 export const eventsByDay = async (req, res) => {
   try {

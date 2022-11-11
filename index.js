@@ -6,6 +6,7 @@ import { registerValidator } from './validations/auth.js';
 import checkAuth from './utils/checkAuth.js';
 import * as UserController from './controllers/UserController.js';
 import * as EventsController from './controllers/EventsController.js';
+import * as CoursesController from './controllers/CoursesController.js';
 
 mongoose
   .connect('mongodb+srv://admin:BRxOI2CGQpXM8qqf@cluster0.thq2mgf.mongodb.net/db?retryWrites=true&w=majority')
@@ -25,6 +26,7 @@ app.post('/auth/register', registerValidator, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
 app.post('/eventsByDay', checkAuth, EventsController.eventsByDay);
 app.get('/notifications', checkAuth, EventsController.notifications);
+app.get('/courses', checkAuth, CoursesController.courses);
 
 app.listen(4444, (err) => {
   if (err) {
